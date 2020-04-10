@@ -1,6 +1,6 @@
 {
   "name": "react-native-live-audio-stream",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Get live audio stream data for React Native",
   "license": "MIT",
   "keywords": [
@@ -21,12 +21,13 @@
     "type": "git",
     "url": "https://github.com/xiqi/react-native-live-audio-stream.git"
   },
-  "author": "Qi Xi <me@imxiqi.com> (https//www.imxiqi.com/)",
+  "author": "Qi Xi <me@imxiqi.com> (https://www.imxiqi.com/)",
   "devDependencies": {
     "babel-eslint": "^8.2.3",
     "eslint": "^4.19.1",
     "eslint-plugin-prettier": "^2.6.0",
     "prettier": "^1.12.0"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "peerDependencies": {}
 }

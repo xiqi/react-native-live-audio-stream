@@ -25,7 +25,7 @@
 /* Begin PBXFileReference section */
 		49C5D74F243FA7A5003D418B /* RNLiveAudioStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNLiveAudioStream.m; sourceTree = "<group>"; };
 		49C5D750243FA7A5003D418B /* RNLiveAudioStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNLiveAudioStream.h; sourceTree = "<group>"; };
-		49C5D75B243FC8AD003D418B /* libRNLiveAudioStream.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libRNLiveAudioStream.a; path = "/Users/qixi/git/react-native-live-audio-stream/ios/build/Debug-iphoneos/libRNLiveAudioStream.a"; sourceTree = "<absolute>"; };
+		49C5D76024407376003D418B /* libRNLiveAudioStream.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNLiveAudioStream.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,6 +44,7 @@
 			children = (
 				49C5D750243FA7A5003D418B /* RNLiveAudioStream.h */,
 				49C5D74F243FA7A5003D418B /* RNLiveAudioStream.m */,
+				49C5D76024407376003D418B /* libRNLiveAudioStream.a */,
 			);
 			sourceTree = "<group>";
 		};
@@ -75,7 +76,7 @@
 			);
 			name = RNLiveAudioStream;
 			productName = RCTDataManager;
-			productReference = 49C5D75B243FC8AD003D418B /* libRNLiveAudioStream.a */;
+			productReference = 49C5D76024407376003D418B /* libRNLiveAudioStream.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
