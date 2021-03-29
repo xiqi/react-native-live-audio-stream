@@ -70,7 +70,7 @@ public class RNLiveAudioStreamModule extends ReactContextBaseJavaModule {
 
         bufferSize = AudioRecord.getMinBufferSize(sampleRateInHz, channelConfig, audioFormat);
 
-		if (options.hasKey("bufferSize")) {
+        if (options.hasKey("bufferSize")) {
             bufferSize = Math.max(bufferSize, options.getInt("bufferSize"));
         }
 
