@@ -21,6 +21,7 @@ declare module "react-native-live-audio-stream" {
      */
     audioSource?: number
     wavFile: string
+    bufferSize?: number
   }
 
   const AudioRecord: IAudioRecord
