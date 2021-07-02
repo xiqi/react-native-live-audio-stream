@@ -59,7 +59,7 @@ RCT_EXPORT_METHOD(start) {
 }
 
 RCT_EXPORT_METHOD(stop) {
-    RCTLogInfo(@"[RNLiveAudioStream] stopRecording");
+    RCTLogInfo(@"[RNLiveAudioStream] stop");
     if (_recordState.mIsRunning) {
         _recordState.mIsRunning = false;
         AudioQueueStop(_recordState.mQueue, true);
