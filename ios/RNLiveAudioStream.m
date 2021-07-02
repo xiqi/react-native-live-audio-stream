@@ -30,12 +30,12 @@ RCT_EXPORT_METHOD(start) {
     if (@available(iOS 10.0, *)) {
         success = [audioSession setCategory: AVAudioSessionCategoryPlayAndRecord
                                        mode: AVAudioSessionModeVoiceChat
-                                    options: AVAudioSessionCategoryOptionDefaultToSpeaker |
+                                    options: AVAudioSessionCategoryOptionDuckOthers |
                                              AVAudioSessionCategoryOptionAllowBluetooth |
                                              AVAudioSessionCategoryOptionAllowAirPlay
                                       error: &error];
     } else {
-        success = [audioSession setCategory: AVAudioSessionCategoryPlayAndRecord /*withOptions: AVAudioSessionCategoryOptionDefaultToSpeaker */error: &error];
+        success = [audioSession setCategory: AVAudioSessionCategoryPlayAndRecord withOptions: AVAudioSessionCategoryOptionDuckOthers error: &error];
         success = [audioSession setMode: AVAudioSessionModeVoiceChat error: &error] && success;
     }
     if (!success || error != nil) {
@@ -48,9 +48,9 @@ RCT_EXPORT_METHOD(start) {
     OSStatus status = AudioQueueNewInput(&_recordState.mDataFormat, HandleInputBuffer, &_recordState, NULL, NULL, 0, &_recordState.mQueue);
     if (status != 0) {
         RCTLog(@"[RNLiveAudioStream] Record Failed. Cannot initialize AudioQueueNewInput. status: %d", status);
-        [self stopRecording];
         return;
     }
+
     for (int i = 0; i < kNumberBuffers; i++) {
         AudioQueueAllocateBuffer(_recordState.mQueue, _recordState.bufferByteSize, &_recordState.mBuffers[i]);
         AudioQueueEnqueueBuffer(_recordState.mQueue, _recordState.mBuffers[i], 0, NULL);
@@ -58,7 +58,7 @@ RCT_EXPORT_METHOD(start) {
     AudioQueueStart(_recordState.mQueue, NULL);
 }
 
--(void) stopRecording {
+RCT_EXPORT_METHOD(stop) {
     RCTLogInfo(@"[RNLiveAudioStream] stopRecording");
     if (_recordState.mIsRunning) {
         _recordState.mIsRunning = false;
@@ -68,10 +68,6 @@ RCT_EXPORT_METHOD(start) {
         }
         AudioQueueDispose(_recordState.mQueue, true);
     }
-}
-
-RCT_EXPORT_METHOD(stop) {
-  [self stopRecording];
 }
 
 void HandleInputBuffer(void *inUserData,
