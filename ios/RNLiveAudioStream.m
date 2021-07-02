@@ -28,17 +28,18 @@ RCT_EXPORT_METHOD(start) {
     // Apple recommended:
     // Instead of setting your category and mode properties independently, set them at the same time
     if (@available(iOS 10.0, *)) {
-        success = [audioSession setCategory: AVAudioSessionCategoryPlayAndRecord // AVAudioSessionCategoryPlayAndRecord or AVAudioSessionCategoryRecord
-                             mode: AVAudioSessionModeVoiceChat // AVAudioSessionModeVoiceChat or AVAudioSessionModeVideoRecording
-                          options: AVAudioSessionCategoryOptionDefaultToSpeaker | AVAudioSessionCategoryOptionAllowBluetooth | AVAudioSessionCategoryOptionAllowAirPlay // AVAudioSessionCategoryOptionDuckOthers | AVAudioSessionCategoryOptionDefaultToSpeaker | AVAudioSessionCategoryOptionMixWithOthers | AVAudioSessionCategoryOptionInterruptSpokenAudioAndMixWithOthers
-                            error: &error];
+        success = [audioSession setCategory: AVAudioSessionCategoryPlayAndRecord
+                                       mode: AVAudioSessionModeVoiceChat
+                                    options: AVAudioSessionCategoryOptionDefaultToSpeaker |
+                                             AVAudioSessionCategoryOptionAllowBluetooth |
+                                             AVAudioSessionCategoryOptionAllowAirPlay
+                                      error: &error];
     } else {
         success = [audioSession setCategory: AVAudioSessionCategoryPlayAndRecord /*withOptions: AVAudioSessionCategoryOptionDefaultToSpeaker */error: &error];
         success = [audioSession setMode: AVAudioSessionModeVoiceChat error: &error] && success;
     }
     if (!success || error != nil) {
-        RCTLog(@"[RNLiveAudioStream] Problem setting up AVAudioSession category and mode.");
-        // RCTLog(@"[RNLiveAudioStream] Problem setting up AVAudioSession category and mode. Error = %@", error);
+        RCTLog(@"[RNLiveAudioStream] Problem setting up AVAudioSession category and mode. Error: %@", error);
         return;
     }
 
@@ -46,8 +47,9 @@ RCT_EXPORT_METHOD(start) {
 
     OSStatus status = AudioQueueNewInput(&_recordState.mDataFormat, HandleInputBuffer, &_recordState, NULL, NULL, 0, &_recordState.mQueue);
     if (status != 0) {
-        RCTLog(@"[RNLiveAudioStream] Record Failed. Cannot initialize AudioQueueNewInput. status = %d", status);
+        RCTLog(@"[RNLiveAudioStream] Record Failed. Cannot initialize AudioQueueNewInput. status: %d", status);
         [self stopRecording];
+        return;
     }
     for (int i = 0; i < kNumberBuffers; i++) {
         AudioQueueAllocateBuffer(_recordState.mQueue, _recordState.bufferByteSize, &_recordState.mBuffers[i]);
@@ -66,25 +68,11 @@ RCT_EXPORT_METHOD(start) {
         }
         AudioQueueDispose(_recordState.mQueue, true);
     }
-
-    // TODO Should we save AVAudioSession category, mode and options before override and restore it here ???
-    // Change the sound back to use the speaker to play
-
-    // AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-    // [audioSession setCategory:AVAudioSessionCategoryPlayback error: &error];
 }
 
 RCT_EXPORT_METHOD(stop) {
   [self stopRecording];
 }
-
-// RCT_EXPORT_METHOD(pause) {
-//     RCTLogInfo(@"[RNLiveAudioStream] pause");
-//     if (_recordState.mIsRunning) {
-//         _recordState.mIsRunning = false;
-//         AudioQueuePause(_recordState.mQueue);
-//     }
-// }
 
 void HandleInputBuffer(void *inUserData,
                        AudioQueueRef inAQ,
