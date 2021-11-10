@@ -20,7 +20,6 @@ declare module "react-native-live-audio-stream" {
      * - `6`
      */
     audioSource?: number
-    wavFile: string
     bufferSize?: number
   }
 
