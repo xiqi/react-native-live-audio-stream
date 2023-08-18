@@ -29,13 +29,12 @@ RCT_EXPORT_METHOD(start) {
     // Instead of setting your category and mode properties independently, set them at the same time
     if (@available(iOS 10.0, *)) {
         success = [audioSession setCategory: AVAudioSessionCategoryPlayAndRecord
-                                       mode: AVAudioSessionModeVoiceChat
-                                    options: AVAudioSessionCategoryOptionDuckOthers |
-                                             AVAudioSessionCategoryOptionAllowBluetooth |
+                                       mode: AVAudioSessionModeSpokenAudio
+                                    options: AVAudioSessionCategoryOptionAllowBluetooth |
                                              AVAudioSessionCategoryOptionAllowAirPlay
                                       error: &error];
     } else {
-        success = [audioSession setCategory: AVAudioSessionCategoryPlayAndRecord withOptions: AVAudioSessionCategoryOptionDuckOthers error: &error];
+        success = [audioSession setCategory: AVAudioSessionCategoryPlayAndRecord withOptions: AVAudioSessionCategoryOptionAllowBluetooth error: &error];
         success = [audioSession setMode: AVAudioSessionModeVoiceChat error: &error] && success;
     }
     if (!success || error != nil) {
