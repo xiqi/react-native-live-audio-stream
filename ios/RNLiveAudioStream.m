@@ -29,7 +29,7 @@ RCT_EXPORT_METHOD(start) {
     // Instead of setting your category and mode properties independently, set them at the same time
     if (@available(iOS 10.0, *)) {
         success = [audioSession setCategory: AVAudioSessionCategoryPlayAndRecord
-                                       mode: AVAudioSessionModeVoiceChat
+                                       mode: AVAudioSessionModeSpokenAudio
                                     options: AVAudioSessionCategoryOptionAllowBluetooth |
                                              AVAudioSessionCategoryOptionAllowAirPlay
                                       error: &error];
