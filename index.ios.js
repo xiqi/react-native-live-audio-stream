@@ -7,9 +7,9 @@ const AudioRecord = {};
 AudioRecord.init = options => RNLiveAudioStream.init(options);
 AudioRecord.start = () => RNLiveAudioStream.start();
 AudioRecord.stop = () => RNLiveAudioStream.stop();
-AudioRecord.startPlay = () => RNLiveAudioStream.startPlay();
-AudioRecord.addPlay = (audioBufferBase64) => RNLiveAudioStream.addPlay(audioBufferBase64);
-AudioRecord.stopPlay = () => RNLiveAudioStream.stopPlay();
+AudioRecord.startPlay = () => {};
+AudioRecord.addPlay = (audioBufferBase64) => {};
+AudioRecord.stopPlay = () => {};
 
 const eventsMap = {
   data: 'data'

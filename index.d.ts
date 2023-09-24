@@ -1,8 +1,30 @@
 declare module "react-native-live-audio-stream" {
   export interface IAudioRecord {
     init: (options: Options) => void
+    /**
+     * make sure to call `init` before this
+     */
     start: () => void
-    stop: () => Promise<string>
+    stop: () => void
+    /**
+     * make sure to call `init` before this
+     * NOTE: this DOES NOT WORK on iOS
+     */
+    startPlay: () => void;
+    /**
+     * NOTE: this DOES NOT WORK on iOS
+     * @param audioBufferBase64 same data that you got on `data` event
+     */
+    addPlay: (audioBufferBase64: string) => void;
+    /**
+     * NOTE: this DOES NOT WORK on iOS
+     */
+    stopPlay: () => void;
+    /**
+     * 
+     * @param event
+     * @param callback provides data as base64 header-less wave audio
+     */
     on: (event: "data", callback: (data: string) => void) => void
   }
 
@@ -20,7 +42,6 @@ declare module "react-native-live-audio-stream" {
      * - `6`
      */
     audioSource?: number
-    wavFile: string
     bufferSize?: number
   }
 

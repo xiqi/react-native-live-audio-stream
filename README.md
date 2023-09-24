@@ -33,6 +33,8 @@ Add the following line to ```android/app/src/main/AndroidManifest.xml```
 ## Usage
 ```javascript
 import LiveAudioStream from 'react-native-live-audio-stream';
+import { PermissionsAndroid } from "react-native";
+
 
 const options = {
   sampleRate: 32000,  // default is 44100 but 32000 is adequate for accurate voice recognition
@@ -42,14 +44,26 @@ const options = {
   bufferSize: 4096    // default is 2048
 };
 
+await PermissionsAndroid.request(
+  PermissionsAndroid.PERMISSIONS.RECORD_AUDIO
+);
+
 LiveAudioStream.init(options);
 LiveAudioStream.on('data', data => {
   // base64-encoded audio data chunks
+
+  // below line plays the received audio data
+  // NOTE: this DOES NOT WORK on iOS
+  LiveAudioStream.addPlay(data);
 });
   ...
+// NOTE: `startPlay` is not necessary on iOS
+LiveAudioStream.startPlay();
 LiveAudioStream.start();
   ...
 LiveAudioStream.stop();
+// NOTE: `stopPlay` is not necessary on iOS
+LiveAudioStream.stopPlay();
   ...
 ```
 

@@ -2,6 +2,8 @@ package com.imxiqi.rnliveaudiostream;
 
 import android.media.AudioFormat;
 import android.media.AudioRecord;
+import android.media.AudioTrack;
+import android.media.AudioManager;
 import android.media.MediaRecorder.AudioSource;
 import android.util.Base64;
 import android.util.Log;
@@ -25,6 +27,7 @@ public class RNLiveAudioStreamModule extends ReactContextBaseJavaModule {
     private int audioFormat;
     private int audioSource;
 
+    private AudioTrack player;
     private AudioRecord recorder;
     private int bufferSize;
     private boolean isRecording;
@@ -76,6 +79,14 @@ public class RNLiveAudioStreamModule extends ReactContextBaseJavaModule {
 
         int recordingBufferSize = bufferSize * 3;
         recorder = new AudioRecord(audioSource, sampleRateInHz, channelConfig, audioFormat, recordingBufferSize);
+
+        // more info: https://stackoverflow.com/questions/9413998/live-audio-recording-and-playing-in-android-and-thread-callback-handling
+        // TODO channelConfig or AudioFormat.CHANNEL_OUT_MONO ?
+        // TODO recordingBufferSize or bufferSize ?
+        player = new AudioTrack(AudioManager.STREAM_MUSIC,
+            sampleRateInHz, AudioFormat.CHANNEL_OUT_MONO, audioFormat,
+            recordingBufferSize, AudioTrack.MODE_STREAM);
+        player.setPlaybackRate(sampleRateInHz);
     }
 
     @ReactMethod
@@ -113,5 +124,34 @@ public class RNLiveAudioStreamModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void stop(Promise promise) {
         isRecording = false;
+    }
+
+    @ReactMethod
+    public void startPlay() {
+        player.play();
+    }
+
+    @ReactMethod
+    public void addPlay(String audioBufferBase64) {
+        byte[] audioBuffer = Base64.decode(audioBufferBase64, Base64.NO_WRAP);
+        // player.flush();
+        player.write(audioBuffer, 0, audioBuffer.length);
+    }
+
+    @ReactMethod
+    public void stopPlay() {
+        player.stop();
+        // TODO should not release? considering we might play again, or not.
+        player.release();
+    }
+
+    @ReactMethod
+    public void addListener(String eventName) {
+        // Keep: Required for RN built in Event Emitter Calls.
+    }
+
+    @ReactMethod
+    public void removeListeners(Integer count) {
+        // Keep: Required for RN built in Event Emitter Calls.
     }
 }
