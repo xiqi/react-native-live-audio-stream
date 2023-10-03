@@ -81,10 +81,9 @@ public class RNLiveAudioStreamModule extends ReactContextBaseJavaModule {
         recorder = new AudioRecord(audioSource, sampleRateInHz, channelConfig, audioFormat, recordingBufferSize);
 
         // more info: https://stackoverflow.com/questions/9413998/live-audio-recording-and-playing-in-android-and-thread-callback-handling
-        // TODO channelConfig or AudioFormat.CHANNEL_OUT_MONO ?
         // TODO recordingBufferSize or bufferSize ?
         player = new AudioTrack(AudioManager.STREAM_MUSIC,
-            sampleRateInHz, AudioFormat.CHANNEL_OUT_MONO, audioFormat,
+            sampleRateInHz, channelConfig, audioFormat,
             recordingBufferSize, AudioTrack.MODE_STREAM);
         player.setPlaybackRate(sampleRateInHz);
     }
