@@ -5,6 +5,10 @@ const EventEmitter = new NativeEventEmitter(RNLiveAudioStream);
 const AudioRecord = {};
 
 AudioRecord.init = options => RNLiveAudioStream.init(options);
+AudioRecord.loadPlayer = () => RNLiveAudioStream.loadPlayer();
+AudioRecord.unloadPlayer = () => RNLiveAudioStream.unloadPlayer();
+AudioRecord.loadRecorder = () => RNLiveAudioStream.loadRecorder();
+AudioRecord.unloadRecorder = () => RNLiveAudioStream.unloadRecorder();
 AudioRecord.start = () => RNLiveAudioStream.start();
 AudioRecord.stop = () => RNLiveAudioStream.stop();
 AudioRecord.startPlay = () => RNLiveAudioStream.startPlay();
