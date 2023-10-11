@@ -1,16 +1,13 @@
 
-# react-native-live-audio-stream
+# theInfiTualEr/react-native-live-audio-stream
+
+This package is a modified version of [react-native-live-audio-stream](https://github.com/xiqi/react-native-live-audio-stream) which that itself is a modification of [react-native-audio-record](https://github.com/goodatlas/react-native-audio-record) package. This package adds **play**, **unload** and **generating audio header** functionality to the `react-native-live-audio-stream` package, but **ONLY FOR ANDROID.**
+
 [![npm](https://img.shields.io/npm/v/react-native-live-audio-stream)](https://www.npmjs.com/package/react-native-live-audio-stream)
-
-Get live audio stream data for React Native. Ideal for live voice recognition (transcribing).
-
-This module is modified from [react-native-audio-record](https://github.com/goodatlas/react-native-audio-record). Instead of saving to an audio file, it only emit events with live data. By doing this, it can reduce memory usage and eliminate file operation overheads in the case that an audio file is not necessary (e.g. live transcribing).
-
-Most of the code was written by the respective original authors.
 
 ## Install
 ```
-yarn add react-native-live-audio-stream
+npm install theInfiTualEr/react-native-live-audio-stream
 cd ios
 pod install
 ```
@@ -33,6 +30,8 @@ Add the following line to ```android/app/src/main/AndroidManifest.xml```
 ## Usage
 ```javascript
 import LiveAudioStream from 'react-native-live-audio-stream';
+import { PermissionsAndroid } from "react-native";
+
 
 const options = {
   sampleRate: 32000,  // default is 44100 but 32000 is adequate for accurate voice recognition
@@ -40,16 +39,35 @@ const options = {
   bitsPerSample: 16,  // 8 or 16, default 16
   audioSource: 6,     // android only (see below)
   bufferSize: 4096    // default is 2048
+  hasAudioHeader: true // default is false, but you probably need it
 };
+
+await PermissionsAndroid.request(
+  PermissionsAndroid.PERMISSIONS.RECORD_AUDIO
+);
 
 LiveAudioStream.init(options);
 LiveAudioStream.on('data', data => {
   // base64-encoded audio data chunks
+
+  // below line plays the received audio data
+  // NOTE: this DOES NOT WORK on iOS
+  LiveAudioStream.addPlay(data);
 });
   ...
+// NOTE: `loadPlayer` is not necessary on iOS
+LiveAudioStream.loadPlayer();
+// NOTE: `startPlay` is not necessary on iOS
+LiveAudioStream.startPlay();
+LiveAudioStream.loadRecorder();
 LiveAudioStream.start();
   ...
 LiveAudioStream.stop();
+LiveAudioStream.unloadRecorder();
+// NOTE: `stopPlay` is not necessary on iOS
+LiveAudioStream.stopPlay();
+// NOTE: `unloadPlayer` is not necessary on iOS
+LiveAudioStream.unloadPlayer();
   ...
 ```
 
@@ -66,6 +84,7 @@ LiveAudioStream.on('data', data => {
 ```
 
 ## Credits/References
+- [react-native-live-audio-stream](https://github.com/xiqi/react-native-live-audio-stream)
 - [react-native-audio-record](https://github.com/goodatlas/react-native-audio-record)
 - iOS [Audio Queues](https://developer.apple.com/library/content/documentation/MusicAudio/Conceptual/AudioQueueProgrammingGuide)
 - Android [AudioRecord](https://developer.android.com/reference/android/media/AudioRecord.html)
